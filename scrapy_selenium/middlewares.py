@@ -100,7 +100,7 @@ class SeleniumMiddleware:
             raise NotConfigured('SELENIUM_DRIVER_NAME must be set')
 
         # let's use webdriver-manager when nothing specified instead | RN just for Chrome
-        if (driver_name.lower() != 'chrome'): # and (driver_executable_path is None and command_executor is None):
+        if (not(driver_name.lower() == 'chrome' or driver_name.lower() == 'firefox')) and (driver_executable_path is None and command_executor is None):
             raise NotConfigured('Either SELENIUM_DRIVER_EXECUTABLE_PATH '
                                 'or SELENIUM_COMMAND_EXECUTOR must be set')
 
