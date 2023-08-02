@@ -51,6 +51,9 @@ class SeleniumMiddleware:
             f'{driver_name}_options': driver_options
         }
 
+        print('driver_kwargs:',driver_kwargs)
+        print('command_executor:',command_executor)
+            
         # locally installed driver
         if driver_executable_path is not None:
             driver_kwargs = {
@@ -68,13 +71,20 @@ class SeleniumMiddleware:
         else:
             # selenium4+ & webdriver-manager
             from selenium import webdriver
-            from webdriver_manager.chrome import ChromeDriverManager
-            from selenium.webdriver.chrome.service import Service as ChromeService
             if driver_name and driver_name.lower() == 'chrome':
+                from webdriver_manager.chrome import ChromeDriverManager
+                from selenium.webdriver.chrome.service import Service as ChromeService
                 # options = webdriver.ChromeOptions()
                 # options.add_argument(o)
                 self.driver = webdriver.Chrome(options=driver_options,
                                                service=ChromeService(ChromeDriverManager().install()))
+            if driver_name and driver_name.lower() == 'firefox':
+                from webdriver_manager.firefox import GeckoDriverManager
+                from selenium.webdriver.firefox.service import Service as FirefoxService
+                # options = webdriver.ChromeOptions()
+                # options.add_argument(o)
+                self.driver = webdriver.Firefox(options=driver_options,
+                                               service=FirefoxService(GeckoDriverManager().install()))
                 
     @classmethod
     def from_crawler(cls, crawler):
